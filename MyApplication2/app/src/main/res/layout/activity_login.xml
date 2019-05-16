@@ -6,28 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".Activities.LoginActivity">
 
-    <android.support.design.widget.TextInputEditText
+    <EditText
         android:background="@color/colorAccent"
         android:id="@+id/usernameET"
         android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:maxLines="1"
+        android:inputType="textAutoComplete"
+        android:nextFocusDown="@id/passwordET"
         />
 
-    <android.support.design.widget.TextInputEditText
+    <EditText
         android:background="@color/colorPrimary"
         android:id="@+id/passwordET"
         android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/usernameET"
-        app:layout_constraintVertical_bias="0.164" />
+        app:layout_constraintVertical_bias="0.164"
+        android:inputType="textPassword" />
     <Button
         android:text="@string/submit_button"
         app:layout_constraintVertical_bias="0.25"
@@ -38,4 +42,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:id="@+id/submitButton"
         android:layout_height="wrap_content" />
+
+
 </android.support.constraint.ConstraintLayout>
