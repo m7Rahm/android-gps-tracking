@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
                                         UpdateMarker(markers[currentElement], latLng, currentElement));
                             }
                     }
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -155,32 +155,32 @@ public class MainActivity extends AppCompatActivity
     {
         final LatLng startPosition = marker.getPosition();
         final Handler handler = new Handler();
-        //final long start = SystemClock.uptimeMillis();
-        //final Interpolator interpolator = new LinearInterpolator();
-        //final float durationInMs = 3000;
-        double updateStepLat = finalPosition.latitude-startPosition.latitude;
-        double updateStepLng = finalPosition.longitude-startPosition.longitude;
+        final long start = SystemClock.uptimeMillis();
+        final Interpolator interpolator = new LinearInterpolator();
+        final float duration = 500;
+        //double updateStepLat = finalPosition.latitude-startPosition.latitude;
+        //double updateStepLng = finalPosition.longitude-startPosition.longitude;
 
-        //long elapsed;
-//double t;
-//double v;
-        handler.post(() -> {
-            // Calculate progress using interpolator
-            //elapsed = SystemClock.uptimeMillis() - start;
-            //t = elapsed / durationInMs;
-            //v = interpolator.getInterpolation(t);
-            for (int i1 = 0; i1 < 200; i1++)
-            {
-                LatLng currentPosition = new LatLng(marker.getPosition().latitude+updateStepLat,marker.getPosition().longitude+updateStepLng);
-                marker.setPosition(currentPosition);
-            }
-            hasUpdateFinished[i] = true;
-            // Repeat till progress is complete.
-            //if (t < 1) {
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+                double lng = t * finalPosition.longitude + (1 - t)
+                        * startPosition.longitude;
+                double lat = t * finalPosition.latitude + (1 - t)
+                        * startPosition.latitude;
+                marker.setPosition(new LatLng(lat, lng));
+                // Repeat till progress is complete.
+                if (t < 1) {
                 // Post again 16ms later.
-                //handler.postDelayed(this, 16);
-            //}
-            //else
+                handler.postDelayed(this, 16);
+                }
+                else
+                    hasUpdateFinished[i] = true;
+            }
         });
     }
 }

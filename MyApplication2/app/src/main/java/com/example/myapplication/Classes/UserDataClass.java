@@ -1,32 +1,36 @@
 package com.example.myapplication.Classes;
 
 public class UserDataClass {
-    private int userId,username,userPassword;
+    private int userId;
+    private String username,userPassword;
 
-    public UserDataClass() {
+    UserDataClass() {
+        userId = -1;
+        username = "";
+        userPassword = "";
     }
 
     public int getUserId() {
         return userId;
     }
 
-    public int getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(int username) {
+    void setUsername(String username) {
         this.username = username;
     }
 
-    public int getUserPassword() {
+    public String getUserPassword() {
         return userPassword;
     }
 
-    public void setUserPassword(int userPassword) {
+    void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
 
-    public void setUserId(int userId) {
+    void setUserId(int userId) {
         this.userId = userId;
     }
 }
