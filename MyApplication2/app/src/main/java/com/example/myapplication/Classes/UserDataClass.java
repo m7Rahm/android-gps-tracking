@@ -1,13 +1,16 @@
 package com.example.myapplication.Classes;
 
-public class UserDataClass {
+import java.io.Serializable;
+
+public class UserDataClass implements Serializable {
     private int userId;
-    private String username,userPassword;
+    private String username,userPassword,userEmail;
 
     UserDataClass() {
         userId = -1;
         username = "";
         userPassword = "";
+        userEmail = "";
     }
 
     public int getUserId() {
@@ -32,5 +35,13 @@ public class UserDataClass {
 
     void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

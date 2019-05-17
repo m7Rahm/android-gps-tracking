@@ -13,12 +13,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.example.myapplication.Classes.CarInfoClass;
 import com.example.myapplication.Classes.UpdateLocationClass;
+import com.example.myapplication.Classes.UserDataClass;
 import com.example.myapplication.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,13 +40,12 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
     private volatile boolean [] hasUpdateFinished;
     private volatile LatLng latLng;
-    private GoogleMap mMap;
-    private Handler handler = new Handler();
     private ArrayList<CarInfoClass> carInfoClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         carInfoClass = (ArrayList<CarInfoClass>) getIntent().getSerializableExtra("carInfoClass");
+        UserDataClass userDataClass = (UserDataClass) getIntent().getSerializableExtra("userDataClass");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,6 +55,11 @@ public class MainActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        ExpandableListView expandableListView = navigationView.findViewById(R.id.expandable_list_view);
+        //expandableListView.
+        View headerView =  navigationView.getHeaderView(0);
+        ((TextView) headerView.findViewById(R.id.userFullNameTV)).setText(userDataClass.getUsername());
+        ((TextView) headerView.findViewById(R.id.userEmailTV)).setText(userDataClass.getUserEmail());
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -109,7 +117,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        final Handler handler = new Handler();
+        GoogleMap mMap = googleMap;
         // Add a marker in Sydney and move the camera
         //LatLng sydney = new LatLng(-34, 151);
         //CameraUpdate location = CameraUpdateFactory.newLatLngZoom(new LatLng(carInfoClass.get(0).getLat(),carInfoClass.get(0).getLng()), 10);
@@ -135,12 +144,12 @@ public class MainActivity extends AppCompatActivity
                         for (int i = 0; i < carInfoClasses.size(); i++)
                             for(int j = 0; j < carInfoClass.size(); j++)
                             if(carInfoClass.get(j).getObjectId()==carInfoClasses.get(i).getObjectId())
-                            if (hasUpdateFinished[j]) {
+                            if (hasUpdateFinished[j])
+                            {
                                 int currentElement = j;
                                 latLng = new LatLng(carInfoClasses.get(i).getLat(), carInfoClasses.get(i).getLng());
                                 hasUpdateFinished[currentElement] = false;
-                                handler.post(() ->
-                                        UpdateMarker(markers[currentElement], latLng, currentElement));
+                                handler.post(() -> UpdateMarker(markers[currentElement], latLng, currentElement));
                             }
                     }
                 } catch (Exception e) {
@@ -157,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final Interpolator interpolator = new LinearInterpolator();
-        final float duration = 500;
+        final float duration = 5500;
         //double updateStepLat = finalPosition.latitude-startPosition.latitude;
         //double updateStepLng = finalPosition.longitude-startPosition.longitude;
 

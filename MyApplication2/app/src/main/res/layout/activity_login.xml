@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.LoginActivity"
-    android:background="#B3A2E4">
+    android:background="#73AAE0">
 
     <EditText
         android:id="@+id/usernameET"
@@ -38,6 +38,7 @@
     <Button
         android:text="@string/submit_button"
         app:layout_constraintVertical_bias="0.25"
+        android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@id/passwordET"
         android:layout_width="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
