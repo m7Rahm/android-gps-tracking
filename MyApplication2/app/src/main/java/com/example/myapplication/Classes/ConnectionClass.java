@@ -129,6 +129,7 @@ public class ConnectionClass {
                         userDataClass.setUserId(Integer.valueOf(eElement.getElementsByTagName("branch_id").item(0).getTextContent()));
                         userDataClass.setUsername(eElement.getElementsByTagName("full_name").item(0).getTextContent());
                         userDataClass.setUserPassword(eElement.getElementsByTagName("pass").item(0).getTextContent());
+                        userDataClass.setUserEmail(eElement.getElementsByTagName("email").item(0).getTextContent());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

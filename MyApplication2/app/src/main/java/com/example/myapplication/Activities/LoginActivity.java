@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                     ArrayList<CarInfoClass> carInfoClass = new ConnectionClass().getInitialCoordinates("GetInitialCoordinates", 1, userDataClass.getUserId());
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra("carInfoClass", carInfoClass);
+                    intent.putExtra("userDataClass",userDataClass);
                     startActivity(intent);
                 }
                 else
