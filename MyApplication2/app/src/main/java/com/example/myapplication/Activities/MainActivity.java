@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         final Handler handler = new Handler();
         GoogleMap mMap = googleMap;
-        // Add a marker in Sydney and move the camera
         //LatLng sydney = new LatLng(-34, 151);
         //CameraUpdate location = CameraUpdateFactory.newLatLngZoom(new LatLng(carInfoClass.get(0).getLat(),carInfoClass.get(0).getLng()), 10);
         //mMap.animateCamera(location);
