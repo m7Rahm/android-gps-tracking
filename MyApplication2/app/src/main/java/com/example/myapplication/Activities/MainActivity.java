@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             LatLng latLng;
             while (true){
             try {
-                carsInfoClass = new UpdateLocationClass().getUpdates(branchId);
+                carsInfoClass = null;// new UpdateLocationClass().getUpdates(branchId);
                 if ((carsInfoClass.size() > 0)) {
                     for (int i = 0; i < carsInfoClass.size(); i++)
                         for (int j = 0; j < carInfoClass.size(); j++)

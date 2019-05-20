@@ -1,19 +1,33 @@
 package com.example.myapplication.Classes;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class CarInfoClass implements Serializable {
-    private double lat,lng;
+    @SerializedName("lat")
+    private double lat;
+    @SerializedName("lng")
+        private double lng;
+    @SerializedName("speed2")
     private float speed;
-    private int branchId,objectId;
-    private String lastInfoTime,carModel,carPlate;
+    @SerializedName("branch_id")
+    private int branchId;
+    @SerializedName("object_id")
+    private int objectId;
+    @SerializedName("insert_date")
+    private String lastInfoTime;
+    @SerializedName("car_model")
+    private String carModel;
+    @SerializedName("object_num")
+    private String numberPlate;
 
     public double getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+     void setLat(double lat) {
         this.lat = lat;
     }
 
@@ -21,7 +35,7 @@ public class CarInfoClass implements Serializable {
         return lng;
     }
 
-    public void setLng(double lng) {
+     void setLng(double lng) {
         this.lng = lng;
     }
 
@@ -29,7 +43,7 @@ public class CarInfoClass implements Serializable {
         return speed;
     }
 
-    public void setSpeed(float speed) {
+     void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -37,7 +51,7 @@ public class CarInfoClass implements Serializable {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+     void setObjectId(int objectId) {
         this.objectId = objectId;
     }
 
@@ -45,7 +59,7 @@ public class CarInfoClass implements Serializable {
         return branchId;
     }
 
-    public void setBranchId(int branchId) {
+     void setBranchId(int branchId) {
         this.branchId = branchId;
     }
 
@@ -53,7 +67,7 @@ public class CarInfoClass implements Serializable {
         return lastInfoTime;
     }
 
-    public void setLastInfoTime(String lastInfoTime) {
+     void setLastInfoTime(String lastInfoTime) {
         this.lastInfoTime = lastInfoTime;
     }
 
@@ -61,15 +75,15 @@ public class CarInfoClass implements Serializable {
         return carModel;
     }
 
-    public void setCarModel(String carModel) {
+     void setCarModel(String carModel) {
         this.carModel = carModel;
     }
 
     public String getCarPlate() {
-        return carPlate;
+        return numberPlate;
     }
 
-    public void setCarPlate(String carPlate) {
-        this.carPlate = carPlate;
+     void setCarPlate(String numberPlate) {
+        this.numberPlate = numberPlate;
     }
 }
