@@ -1,5 +1,6 @@
 package com.example.myapplication.Activities;
 
+import java.io.Serializable;
 import java.security.*;
 
 import android.content.Context;
@@ -13,17 +14,27 @@ import android.widget.Toast;
 
 import com.example.myapplication.Classes.CarInfoClass;
 import com.example.myapplication.Classes.ConnectionClass;
+import com.example.myapplication.Classes.RetrofitClass;
 import com.example.myapplication.Classes.UserDataClass;
+import com.example.myapplication.Interfaces.RetrofitInterface;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
+    List<CarInfoClass> carInfoClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //RetrofitClass retrofitClass = new RetrofitClass();
         final Context context = this;
         final EditText usernameET = findViewById(R.id.usernameET);
         final EditText passwordET = findViewById(R.id.passwordET);
@@ -33,11 +44,25 @@ public class LoginActivity extends AppCompatActivity {
             if (!usernameET.getText().toString().equals("")&& !passwordET.getText().toString().equals("")) {
                 UserDataClass userDataClass = new ConnectionClass().getLoginInfo("GetLoginInfo", usernameET.getText().toString());
                 if (encodePassword(passwordET.getText().toString(), userDataClass.getUserPassword())) {
-                    ArrayList<CarInfoClass> carInfoClass = new ConnectionClass().getInitialCoordinates("GetInitialCoordinates", 1, userDataClass.getUserId());
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("carInfoClass", carInfoClass);
-                    intent.putExtra("userDataClass",userDataClass);
-                    startActivity(intent);
+                    //ArrayList<CarInfoClass> carInfoClass = new ConnectionClass().getInitialCoordinates("GetInitialCoordinates", 1, userDataClass.getUserId());
+                    RetrofitInterface retrofit =  new RetrofitClass("http://10.1.11.134/RESTWebService/").getRetrofit().create(RetrofitInterface.class);
+                    Call<List<CarInfoClass>> call = retrofit.getInitialCoordinates(1,userDataClass.getUserId());
+                    call.enqueue(new Callback<List<CarInfoClass>>() {
+                        @Override
+                        public void onResponse(Call<List<CarInfoClass>> call, Response<List<CarInfoClass>> response) {
+                            if(response.isSuccessful())
+                            carInfoClass = response.body();
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.putExtra("carInfoClass", (Serializable) carInfoClass);
+                            intent.putExtra("userDataClass",userDataClass);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<CarInfoClass>> call, Throwable t) {
+
+                        }
+                    });
                 }
                 else
                     handler.post(()-> Toast.makeText(context,"Wrong Credentials",Toast.LENGTH_LONG).show());
