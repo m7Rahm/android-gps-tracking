@@ -6,6 +6,7 @@ import java.security.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -25,7 +26,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
     List<CarInfoClass> carInfoClass;
@@ -45,11 +45,11 @@ public class LoginActivity extends AppCompatActivity {
                 UserDataClass userDataClass = new ConnectionClass().getLoginInfo("GetLoginInfo", usernameET.getText().toString());
                 if (encodePassword(passwordET.getText().toString(), userDataClass.getUserPassword())) {
                     //ArrayList<CarInfoClass> carInfoClass = new ConnectionClass().getInitialCoordinates("GetInitialCoordinates", 1, userDataClass.getUserId());
-                    RetrofitInterface retrofit =  new RetrofitClass("http://10.1.11.134/RESTWebService/").getRetrofit().create(RetrofitInterface.class);
+                    RetrofitInterface retrofit =  RetrofitClass.getRetrofit("http://10.1.11.134/RESTWebService/").create(RetrofitInterface.class);
                     Call<List<CarInfoClass>> call = retrofit.getInitialCoordinates(1,userDataClass.getUserId());
                     call.enqueue(new Callback<List<CarInfoClass>>() {
                         @Override
-                        public void onResponse(Call<List<CarInfoClass>> call, Response<List<CarInfoClass>> response) {
+                        public void onResponse(@NonNull Call<List<CarInfoClass>> call, @NonNull Response<List<CarInfoClass>> response) {
                             if(response.isSuccessful())
                             carInfoClass = response.body();
                             Intent intent = new Intent(context, MainActivity.class);
@@ -59,8 +59,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<List<CarInfoClass>> call, Throwable t) {
-
+                        public void onFailure(@NonNull Call<List<CarInfoClass>> call, @NonNull Throwable t) {
+                            Toast.makeText(context,"Error connecting to server",Toast.LENGTH_LONG).show();
                         }
                     });
                 }

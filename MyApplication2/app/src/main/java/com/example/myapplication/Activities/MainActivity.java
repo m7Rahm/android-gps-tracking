@@ -20,8 +20,10 @@ import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.example.myapplication.Classes.CarInfoClass;
+import com.example.myapplication.Classes.RetrofitClass;
 import com.example.myapplication.Classes.UpdateLocationClass;
 import com.example.myapplication.Classes.UserDataClass;
+import com.example.myapplication.Interfaces.RetrofitInterface;
 import com.example.myapplication.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,6 +33,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
 
 
 public class MainActivity extends AppCompatActivity
@@ -130,12 +135,14 @@ public class MainActivity extends AppCompatActivity
             markerCoordinates.append(i,new LatLng(currentItem.getLat(), currentItem.getLng()));
         }
         new Thread(()->{
-            ArrayList<CarInfoClass> carsInfoClass;
+            List<CarInfoClass> carsInfoClass;
             LatLng latLng;
+            RetrofitInterface retrofit =  RetrofitClass.getRetrofit("http://10.1.11.134/RESTWebService/").create(RetrofitInterface.class);
+            Call<List<CarInfoClass>> call = retrofit.getUpdates(branchId);
             while (true){
             try {
-                carsInfoClass = null;// new UpdateLocationClass().getUpdates(branchId);
-                if ((carsInfoClass.size() > 0)) {
+                carsInfoClass = call.clone().execute().body();
+                if ((carsInfoClass!=null && carsInfoClass.size() > 0)) {
                     for (int i = 0; i < carsInfoClass.size(); i++)
                         for (int j = 0; j < carInfoClass.size(); j++)
                             if (carInfoClass.get(j).getObjectId() == carsInfoClass.get(i).getObjectId()) {

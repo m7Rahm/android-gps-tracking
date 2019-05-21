@@ -41,7 +41,7 @@ public class UserDataClass implements Serializable {
         return userEmail;
     }
 
-    public void setUserEmail(String userEmail) {
+    void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
 }
