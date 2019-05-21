@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="WpfApp1.UserControl6"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp1"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="53*"/>
+                <ColumnDefinition Width="55*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="goodsNameLabel" Grid.Column="0" Content="Mala görə axtarış" />
+            <TextBox Text="" Grid.Column="1" Height="22" Margin="1"/>
+        </Grid>
+        <DataGrid x:Name="dataGridLeftovers" AutoGenerateColumns="False"
+                  ScrollViewer.CanContentScroll="False" HorizontalScrollBarVisibility="Disabled">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="" Width="0.55" x:Name="DetailsColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="GhostWhite" BorderBrush="Transparent" Click="Button_Click">
+                                <Button.Content>
+                                    <Image x:Name="buttonImage" Source="Resources/downArrow.png"/>
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn IsReadOnly="True" Header="Artikul" Width="0.55*" x:Name="ArtikulColumn"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Mal" Width="1.5*" x:Name="MalColumn"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Vahid" Width="0.5*" x:Name="UnitColumn"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Qalıq" Width="0.5*" x:Name="QaliqColumn"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Dəyər" Width="0.5*" x:Name="DeyerColumn"/>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <local:UserControl7 Id="New York">
+                    </local:UserControl7>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+    </DockPanel>
+</UserControl>
