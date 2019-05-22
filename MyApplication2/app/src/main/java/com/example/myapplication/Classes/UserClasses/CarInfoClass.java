@@ -1,4 +1,4 @@
-package com.example.myapplication.Classes;
+package com.example.myapplication.Classes.UserClasses;
 
 
 import com.google.gson.annotations.SerializedName;
@@ -27,7 +27,7 @@ public class CarInfoClass implements Serializable {
         return lat;
     }
 
-     void setLat(double lat) {
+     public void setLat(double lat) {
         this.lat = lat;
     }
 
@@ -35,7 +35,7 @@ public class CarInfoClass implements Serializable {
         return lng;
     }
 
-     void setLng(double lng) {
+     public void setLng(double lng) {
         this.lng = lng;
     }
 
@@ -43,7 +43,7 @@ public class CarInfoClass implements Serializable {
         return speed;
     }
 
-     void setSpeed(float speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -51,7 +51,7 @@ public class CarInfoClass implements Serializable {
         return objectId;
     }
 
-     void setObjectId(int objectId) {
+    public void setObjectId(int objectId) {
         this.objectId = objectId;
     }
 
@@ -59,7 +59,7 @@ public class CarInfoClass implements Serializable {
         return branchId;
     }
 
-     void setBranchId(int branchId) {
+     public void setBranchId(int branchId) {
         this.branchId = branchId;
     }
 
@@ -67,7 +67,7 @@ public class CarInfoClass implements Serializable {
         return lastInfoTime;
     }
 
-     void setLastInfoTime(String lastInfoTime) {
+    public void setLastInfoTime(String lastInfoTime) {
         this.lastInfoTime = lastInfoTime;
     }
 
@@ -75,7 +75,7 @@ public class CarInfoClass implements Serializable {
         return carModel;
     }
 
-     void setCarModel(String carModel) {
+    public void setCarModel(String carModel) {
         this.carModel = carModel;
     }
 
@@ -83,7 +83,7 @@ public class CarInfoClass implements Serializable {
         return numberPlate;
     }
 
-     void setCarPlate(String numberPlate) {
+    public void setCarPlate(String numberPlate) {
         this.numberPlate = numberPlate;
     }
 }

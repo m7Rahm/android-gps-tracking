@@ -13,14 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.myapplication.Classes.CarInfoClass;
+import com.example.myapplication.Classes.UserClasses.CarInfoClass;
 import com.example.myapplication.Classes.ConnectionClass;
 import com.example.myapplication.Classes.RetrofitClass;
-import com.example.myapplication.Classes.UserDataClass;
+import com.example.myapplication.Classes.UserClasses.UserDataClass;
 import com.example.myapplication.Interfaces.RetrofitInterface;
 import com.example.myapplication.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

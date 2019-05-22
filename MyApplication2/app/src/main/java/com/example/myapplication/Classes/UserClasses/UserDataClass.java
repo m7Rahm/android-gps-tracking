@@ -1,4 +1,4 @@
-package com.example.myapplication.Classes;
+package com.example.myapplication.Classes.UserClasses;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ public class UserDataClass implements Serializable {
     private int userId;
     private String username,userPassword,userEmail;
 
-    UserDataClass() {
+    public UserDataClass() {
         userId = -1;
         username = "";
         userPassword = "";
@@ -21,7 +21,7 @@ public class UserDataClass implements Serializable {
         return username;
     }
 
-    void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -29,11 +29,11 @@ public class UserDataClass implements Serializable {
         return userPassword;
     }
 
-    void setUserPassword(String userPassword) {
+    public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
 
-    void setUserId(int userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -41,7 +41,7 @@ public class UserDataClass implements Serializable {
         return userEmail;
     }
 
-    void setUserEmail(String userEmail) {
+    public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
 }

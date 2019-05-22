@@ -1,5 +1,7 @@
 package com.example.myapplication.Classes;
 
+import com.example.myapplication.Classes.UserClasses.CarInfoClass;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

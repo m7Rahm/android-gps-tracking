@@ -1,6 +1,6 @@
 package com.example.myapplication.Interfaces;
 
-import com.example.myapplication.Classes.CarInfoClass;
+import com.example.myapplication.Classes.UserClasses.CarInfoClass;
 
 import java.util.List;
 

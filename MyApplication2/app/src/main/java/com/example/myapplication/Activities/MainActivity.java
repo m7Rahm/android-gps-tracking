@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
@@ -19,10 +20,9 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
-import com.example.myapplication.Classes.CarInfoClass;
+import com.example.myapplication.Classes.UserClasses.CarInfoClass;
 import com.example.myapplication.Classes.RetrofitClass;
-import com.example.myapplication.Classes.UpdateLocationClass;
-import com.example.myapplication.Classes.UserDataClass;
+import com.example.myapplication.Classes.UserClasses.UserDataClass;
 import com.example.myapplication.Interfaces.RetrofitInterface;
 import com.example.myapplication.R;
 import com.google.android.gms.maps.GoogleMap;
@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        //ExpandableListView expandableListView = navigationView.findViewById(R.id.expandable_list_view);
-        //expandableListView.
+        RecyclerView carsListRV = navigationView.findViewById(R.id.carsListRV);
         View headerView =  navigationView.getHeaderView(0);
         ((TextView) headerView.findViewById(R.id.userFullNameTV)).setText(userDataClass.getUsername());
         ((TextView) headerView.findViewById(R.id.userEmailTV)).setText(userDataClass.getUserEmail());
