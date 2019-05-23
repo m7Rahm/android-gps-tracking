@@ -8,6 +8,8 @@
     android:background="#73AAE0">
 
     <EditText
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
         android:id="@+id/usernameET"
         android:layout_width="150dp"
         android:layout_height="40dp"
@@ -24,6 +26,8 @@
         app:layout_constraintVertical_bias="0.6" />
 
     <EditText
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
         android:elevation="2dp"
         android:background="@drawable/edit_text_background"
         android:id="@+id/passwordET"
@@ -34,7 +38,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/usernameET"
         app:layout_constraintVertical_bias="0.11"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        />
     <Button
         android:text="@string/submit_button"
         app:layout_constraintVertical_bias="0.25"

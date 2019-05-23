@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.MenuItem;
@@ -20,11 +21,15 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
+import com.example.myapplication.Classes.AdapterClasses.RecyclerViewAdapter;
 import com.example.myapplication.Classes.UserClasses.CarInfoClass;
 import com.example.myapplication.Classes.RetrofitClass;
 import com.example.myapplication.Classes.UserClasses.UserDataClass;
+import com.example.myapplication.Interfaces.NavigateToObjectInterface;
 import com.example.myapplication.Interfaces.RetrofitInterface;
 import com.example.myapplication.R;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -39,9 +44,10 @@ import retrofit2.Call;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, NavigateToObjectInterface {
     private volatile boolean [] hasUpdateFinished;
     private ArrayList<CarInfoClass> carInfoClass;
+    private GoogleMap mMap;
     SparseArray<LatLng> markerCoordinates = new SparseArray <>();
     private static int branchId = -1;
     @Override
@@ -60,6 +66,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         RecyclerView carsListRV = navigationView.findViewById(R.id.carsListRV);
+        carsListRV.setAdapter(new RecyclerViewAdapter(carInfoClass,this));
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this);
+        linearLayout.setOrientation(LinearLayoutManager.VERTICAL);
+        carsListRV.setLayoutManager(linearLayout);
         View headerView =  navigationView.getHeaderView(0);
         ((TextView) headerView.findViewById(R.id.userFullNameTV)).setText(userDataClass.getUsername());
         ((TextView) headerView.findViewById(R.id.userEmailTV)).setText(userDataClass.getUserEmail());
@@ -121,7 +131,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         final Handler handler = new Handler();
-        GoogleMap mMap = googleMap;
+        mMap = googleMap;
         //LatLng sydney = new LatLng(-34, 151);
         //CameraUpdate location = CameraUpdateFactory.newLatLngZoom(new LatLng(carInfoClass.get(0).getLat(),carInfoClass.get(0).getLng()), 10);
         //mMap.animateCamera(location);
@@ -214,5 +224,11 @@ public class MainActivity extends AppCompatActivity
                     hasUpdateFinished[i] = true;
             }
         });
+    }
+
+    @Override
+    public void NavigateTo(int i) {
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(new LatLng(carInfoClass.get(i).getLat(),carInfoClass.get(i).getLng()), 10);
+        mMap.animateCamera(location);
     }
 }

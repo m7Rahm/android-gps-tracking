@@ -14,6 +14,8 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_maps">Map</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

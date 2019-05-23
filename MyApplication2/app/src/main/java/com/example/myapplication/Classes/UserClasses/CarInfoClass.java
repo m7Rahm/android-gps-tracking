@@ -1,11 +1,14 @@
 package com.example.myapplication.Classes.UserClasses;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class CarInfoClass implements Serializable {
+public class CarInfoClass implements Serializable, Parcelable {
     @SerializedName("lat")
     private double lat;
     @SerializedName("lng")
@@ -22,6 +25,33 @@ public class CarInfoClass implements Serializable {
     private String carModel;
     @SerializedName("object_num")
     private String numberPlate;
+
+    public  CarInfoClass()
+    {
+    }
+
+    private CarInfoClass(Parcel in) {
+        lat = in.readDouble();
+        lng = in.readDouble();
+        speed = in.readFloat();
+        branchId = in.readInt();
+        objectId = in.readInt();
+        lastInfoTime = in.readString();
+        carModel = in.readString();
+        numberPlate = in.readString();
+    }
+
+    public static final Creator<CarInfoClass> CREATOR = new Creator<CarInfoClass>() {
+        @Override
+        public CarInfoClass createFromParcel(Parcel in) {
+            return new CarInfoClass(in);
+        }
+
+        @Override
+        public CarInfoClass[] newArray(int size) {
+            return new CarInfoClass[size];
+        }
+    };
 
     public double getLat() {
         return lat;
@@ -85,5 +115,22 @@ public class CarInfoClass implements Serializable {
 
     public void setCarPlate(String numberPlate) {
         this.numberPlate = numberPlate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(lat);
+        dest.writeDouble(lng);
+        dest.writeFloat(speed);
+        dest.writeInt(branchId);
+        dest.writeInt(objectId);
+        dest.writeString(lastInfoTime);
+        dest.writeString(carModel);
+        dest.writeString(numberPlate);
     }
 }
