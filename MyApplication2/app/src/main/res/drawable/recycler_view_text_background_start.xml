@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:topLeftRadius="15dp"
+        android:bottomLeftRadius="15dp"/>
+    <gradient android:centerColor="@color/common_google_signin_btn_text_dark"
+        android:startColor="@color/common_google_signin_btn_text_dark"
+        android:endColor="#FFEDBF"
+        android:type="linear"
+        android:gradientRadius="20dp"
+        android:angle="45"
+        />
+</shape>

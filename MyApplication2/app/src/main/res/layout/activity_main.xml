@@ -21,11 +21,17 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         >
+        <View
+            android:layout_marginTop="176dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/recycler_view_text_background_end"/>
         <android.support.v7.widget.RecyclerView
+            android:background="@drawable/recycler_view_text_background_start"
             android:id="@+id/carsListRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="176dp"/>
+            android:layout_marginTop="206dp"/>
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

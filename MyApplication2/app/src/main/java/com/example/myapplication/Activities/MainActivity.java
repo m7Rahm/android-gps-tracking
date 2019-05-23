@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
@@ -22,6 +23,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.example.myapplication.Classes.AdapterClasses.RecyclerViewAdapter;
+import com.example.myapplication.Classes.AdapterClasses.SwipeMenu;
 import com.example.myapplication.Classes.UserClasses.CarInfoClass;
 import com.example.myapplication.Classes.RetrofitClass;
 import com.example.myapplication.Classes.UserClasses.UserDataClass;
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         RecyclerView carsListRV = navigationView.findViewById(R.id.carsListRV);
         carsListRV.setAdapter(new RecyclerViewAdapter(carInfoClass,this));
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(new SwipeMenu(this));
+        itemTouchhelper.attachToRecyclerView(carsListRV);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this);
         linearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         carsListRV.setLayoutManager(linearLayout);

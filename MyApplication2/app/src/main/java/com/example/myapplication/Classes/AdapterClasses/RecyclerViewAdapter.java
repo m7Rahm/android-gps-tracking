@@ -42,8 +42,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return carInfoClasses.size();
     }
     class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView carName;
-        ImageButton button;
+        private TextView carName;
+        private ImageButton button;
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             button = itemView.findViewById(R.id.imageB);
