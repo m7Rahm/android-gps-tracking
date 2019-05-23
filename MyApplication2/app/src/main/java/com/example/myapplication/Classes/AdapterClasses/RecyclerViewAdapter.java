@@ -29,7 +29,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder viewHolder, int i) {
         viewHolder.button.setOnClickListener(v -> {
-    });
+            if(!navigateToObjectInterface.ShowHideMarker(i))
+            viewHolder.button.setImageResource(R.drawable.ic_hide_eye_vector);
+            else
+                viewHolder.button.setImageResource(R.drawable.ic_show_eye_vector);
+        });
         viewHolder.carName.setOnClickListener(v-> navigateToObjectInterface.NavigateTo(i));
         viewHolder.carName.setText(carInfoClasses.get(i).getCarPlate());
     }

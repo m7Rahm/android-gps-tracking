@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private volatile boolean [] hasUpdateFinished;
     private ArrayList<CarInfoClass> carInfoClass;
     private GoogleMap mMap;
+    private Marker [] markers;
     SparseArray<LatLng> markerCoordinates = new SparseArray <>();
     private static int branchId = -1;
     @Override
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity
         //LatLng sydney = new LatLng(-34, 151);
         //CameraUpdate location = CameraUpdateFactory.newLatLngZoom(new LatLng(carInfoClass.get(0).getLat(),carInfoClass.get(0).getLng()), 10);
         //mMap.animateCamera(location);
-        Marker [] markers = new Marker[carInfoClass.size()];
+        markers = new Marker[carInfoClass.size()];
         hasUpdateFinished = new boolean[carInfoClass.size()];
         for (int i = 0; i <carInfoClass.size(); i++) {
             CarInfoClass currentItem = carInfoClass.get(i);
@@ -230,5 +231,15 @@ public class MainActivity extends AppCompatActivity
     public void NavigateTo(int i) {
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(new LatLng(carInfoClass.get(i).getLat(),carInfoClass.get(i).getLng()), 10);
         mMap.animateCamera(location);
+    }
+
+    @Override
+    public boolean ShowHideMarker(int markerPosition) {
+        if (markers[markerPosition].isVisible()) {
+            markers[markerPosition].setVisible(false);
+            return false;
+        }else
+            markers[markerPosition].setVisible(true);
+        return true;
     }
 }
