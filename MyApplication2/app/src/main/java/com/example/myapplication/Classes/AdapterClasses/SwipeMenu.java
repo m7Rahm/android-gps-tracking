@@ -1,24 +1,31 @@
 package com.example.myapplication.Classes.AdapterClasses;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import com.example.myapplication.R;
+
+import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
 
 public class SwipeMenu extends ItemTouchHelper.SimpleCallback {
     private ColorDrawable backgroundColor;
-    Context context;
-    public SwipeMenu(Context context) {
+    private Drawable drawable;
+    private Context context;
+
+    public SwipeMenu(@NonNull Context context) {
         super(0, ItemTouchHelper.RIGHT);
         this.context = context;
         backgroundColor = new ColorDrawable();
+        drawable =  context.getDrawable(R.drawable.ic_information_icon);
         backgroundColor.setColor(Color.parseColor("#b80f0a"));
     }
     @Override
@@ -33,7 +40,7 @@ public class SwipeMenu extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
-        return 1f;
+        return 1.2f;
     }
 
     @Override
@@ -41,22 +48,32 @@ public class SwipeMenu extends ItemTouchHelper.SimpleCallback {
 
     }
 
+    @Override
+    public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+        return super.getSwipeDirs(recyclerView, viewHolder);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         View itemView = viewHolder.itemView;
-        backgroundColor.setBounds(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + ((int) dX/5), itemView.getBottom());
+        drawable.setBounds(itemView.getLeft(), itemView.getTop()-10,  120, itemView.getBottom());
+            c.clipRect(itemView.getLeft(), itemView.getTop(), itemView.getLeft()+ dX/5, itemView.getBottom());
         //View menuView =
-        recyclerView.setOnTouchListener((v, event) ->
-        {
-            if (event.getX() < 70){
-                Toast.makeText(context, String.valueOf(event.getX()), Toast.LENGTH_LONG).show();
-            return true;
-        }
-            else return false;
+        //isMenuVisible = dX > 110;
+        drawable.draw(c);
+        recyclerView.setOnTouchListener((v,event)->{
+            if (!isCurrentlyActive && event.getX()<120) {
+                recyclerView.setClickable(false);
+                //Toast.makeText(context, String.valueOf(event.getX()), Toast.LENGTH_LONG).show();
+                Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.activity_login);
+                dialog.show();
+            }
+            else recyclerView.setClickable(true);
+            return false;
         });
-        backgroundColor.draw(c);
-        super.onChildDraw(c, recyclerView, viewHolder, dX/5, dY, actionState, isCurrentlyActive);
-        // Draw the red delete background
+        if(actionState ==ACTION_STATE_SWIPE)
+        super.onChildDraw(c, recyclerView, viewHolder, dX/5, 0, actionState, isCurrentlyActive);
     }
 }
