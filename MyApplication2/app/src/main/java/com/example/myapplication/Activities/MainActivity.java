@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private volatile boolean [] hasUpdateFinished;
     private ArrayList<CarInfoClass> carInfoClass;
     private GoogleMap mMap;
+    private RecyclerViewAdapter myAdapter;
     private Marker [] markers;
     SparseArray<LatLng> markerCoordinates = new SparseArray <>();
     private static int branchId = -1;
@@ -69,7 +70,8 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         RecyclerView carsListRV = navigationView.findViewById(R.id.carsListRV);
-        carsListRV.setAdapter(new RecyclerViewAdapter(carInfoClass,this));
+        myAdapter =new RecyclerViewAdapter(carInfoClass,this);
+        carsListRV.setAdapter(myAdapter);
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(new SwipeMenu(this));
         itemTouchhelper.attachToRecyclerView(carsListRV);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this);
@@ -188,7 +190,8 @@ public class MainActivity extends AppCompatActivity
                                 int currentElement = j;
                                 //latLng = new LatLng(carsInfoClass.get(i).getLat(), carsInfoClass.get(i).getLng());
                                 hasUpdateFinished[currentElement] = false;
-                                handler.post(() -> UpdateMarker(markers, markerCoordinates.valueAt(currentElement), currentElement));
+                                handler.post(() ->{ UpdateMarker(markers, markerCoordinates.valueAt(currentElement), currentElement);
+                                myAdapter.notifyDataSetChanged();});
                             }
                     //}
                 } catch (Exception e) {
@@ -230,7 +233,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
     @Override
     public void NavigateTo(int i) {
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(new LatLng(carInfoClass.get(i).getLat(),carInfoClass.get(i).getLng()), 10);

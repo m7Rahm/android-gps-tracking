@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             else handler.post(()-> Toast.makeText(context,"Login or Password field is empty",Toast.LENGTH_LONG).show());
         }).start()));
     }
-    private boolean encodePassword(String inputString, String encodedString)  {
+    private boolean encodePassword(@NonNull String inputString, String encodedString)  {
         try {
 
             MessageDigest md5Encoder = MessageDigest.getInstance("MD5");

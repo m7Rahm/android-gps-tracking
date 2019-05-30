@@ -25,7 +25,7 @@ public class CarInfoClass implements Serializable, Parcelable {
     private String carModel;
     @SerializedName("object_num")
     private String numberPlate;
-
+    private boolean isExpanded = false;
     public  CarInfoClass()
     {
     }
@@ -132,5 +132,13 @@ public class CarInfoClass implements Serializable, Parcelable {
         dest.writeString(lastInfoTime);
         dest.writeString(carModel);
         dest.writeString(numberPlate);
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 }

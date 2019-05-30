@@ -34,7 +34,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             else
                 viewHolder.button.setImageResource(R.drawable.ic_show_eye_vector);
         });
-        viewHolder.carName.setOnClickListener(v-> navigateToObjectInterface.NavigateTo(i));
+        viewHolder.carName.setOnClickListener(v-> {navigateToObjectInterface.NavigateTo(i);
+            carInfoClasses.get(i).setExpanded(!carInfoClasses.get(i).isExpanded());
+            notifyItemChanged(i);});
+        viewHolder.layout.setVisibility(carInfoClasses.get(i).isExpanded()? View.VISIBLE : View.GONE);
+        viewHolder.carModel.setText(carInfoClasses.get(i).getCarModel());
+        viewHolder.speedTV.setText(String.valueOf(carInfoClasses.get(i).getSpeed()));
         viewHolder.carName.setText(carInfoClasses.get(i).getCarPlate());
     }
     @Override
@@ -42,12 +47,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return carInfoClasses.size();
     }
     class MyViewHolder extends RecyclerView.ViewHolder{
-        private TextView carName;
+        private TextView carName,speedTV,carModel;
+        private View layout;
         private ImageButton button;
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            layout = itemView.findViewById(R.id.carInfoLayout);
             button = itemView.findViewById(R.id.imageB);
             carName = itemView.findViewById(R.id.carPlateTV);
+            speedTV = itemView.findViewById(R.id.speedTV);
+            carModel = itemView.findViewById(R.id.carModelTV);
         }
     }
 }
