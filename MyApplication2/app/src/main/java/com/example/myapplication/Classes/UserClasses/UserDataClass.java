@@ -1,10 +1,18 @@
 package com.example.myapplication.Classes.UserClasses;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class UserDataClass implements Serializable {
+    @SerializedName("branchId")
     private int userId;
-    private String username,userPassword,userEmail;
+    @SerializedName("fullName")
+    private String username;
+    @SerializedName("password")
+    private String userPassword;
+    @SerializedName("email")
+    private String userEmail;
 
     public UserDataClass() {
         userId = -1;

@@ -1,8 +1,11 @@
 package com.example.myapplication.Activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, NavigateToObjectInterface {
     private volatile boolean [] hasUpdateFinished;
     private ArrayList<CarInfoClass> carInfoClass;
+    private static boolean hasUpdated = false;
     private GoogleMap mMap;
     private RecyclerViewAdapter myAdapter;
     private Marker [] markers;
@@ -153,12 +156,13 @@ public class MainActivity extends AppCompatActivity
         new Thread(()->{
             List<CarInfoClass> carsInfoClass;
             LatLng latLng;
-            RetrofitInterface retrofit =  RetrofitClass.getRetrofit("http://10.1.11.134/RESTWebService/").create(RetrofitInterface.class);
+            RetrofitInterface retrofit =  RetrofitClass.getRetrofit("http://10.1.11.134/gpsws/").create(RetrofitInterface.class);
             Call<List<CarInfoClass>> call = retrofit.getUpdates(branchId);
             while (true){
             try {
                 carsInfoClass = call.clone().execute().body();
                 if ((carsInfoClass!=null && carsInfoClass.size() > 0)) {
+                    hasUpdated = true;
                     for (int i = 0; i < carsInfoClass.size(); i++)
                         for (int j = 0; j < carInfoClass.size(); j++)
                             if (carInfoClass.get(j).getObjectId() == carsInfoClass.get(i).getObjectId()) {
@@ -166,6 +170,8 @@ public class MainActivity extends AppCompatActivity
                                 markerCoordinates.setValueAt(j, latLng);
                             }
                 }
+                else
+                    hasUpdated = false;
             }
             catch (Exception ex)
             {
@@ -185,7 +191,7 @@ public class MainActivity extends AppCompatActivity
                         //for (int i = 0; i < carsInfoClass.size(); i++)
                             for(int j = 0; j < carInfoClass.size(); j++)
                             //if(carInfoClass.get(j).getObjectId()==carsInfoClass.get(i).getObjectId())
-                            if (hasUpdateFinished[j])
+                            if (hasUpdateFinished[j]&&hasUpdated)
                             {
                                 int currentElement = j;
                                 //latLng = new LatLng(carsInfoClass.get(i).getLat(), carsInfoClass.get(i).getLng());
@@ -205,33 +211,21 @@ public class MainActivity extends AppCompatActivity
     public void UpdateMarker(Marker [] markers, LatLng finalPosition,int i)
     {
         final LatLng startPosition = markers[i].getPosition();
-        final Handler handler = new Handler();
-        final long start = SystemClock.uptimeMillis();
-        final Interpolator interpolator = new LinearInterpolator();
-        final float duration = 4000;
-        //double updateStepLat = finalPosition.latitude-startPosition.latitude;
-        //double updateStepLng = finalPosition.longitude-startPosition.longitude;
-
-        handler.post(new Runnable() {
+        final ValueAnimator valueAnimator = ValueAnimator.ofObject((TypeEvaluator<LatLng>)
+                (fraction, startValue, endValue) -> new LatLng(startValue.latitude+fraction*(endValue.latitude-startValue.latitude),
+                        startValue.longitude+fraction*(endValue.longitude-startValue.longitude)),startPosition,finalPosition);
+        valueAnimator.addUpdateListener(animation ->
+                markers[i].setPosition((LatLng) animation.getAnimatedValue()));
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void run() {
-                long elapsed = SystemClock.uptimeMillis() - start;
-                float t = interpolator.getInterpolation((float) elapsed
-                        / duration);
-                double lng = t * finalPosition.longitude + (1 - t)
-                        * startPosition.longitude;
-                double lat = t * finalPosition.latitude + (1 - t)
-                        * startPosition.latitude;
-                markers[i].setPosition(new LatLng(lat, lng));
-                // Repeat till progress is complete.
-                if (t < 1) {
-                // Post again 16ms later.
-                handler.postDelayed(this, 16);
-                }
-                else
-                    hasUpdateFinished[i] = true;
+            public void onAnimationEnd(Animator animation) {
+                hasUpdateFinished[i] = true;
             }
         });
+        valueAnimator.setDuration(4000);
+        final Handler handler = new Handler();
+        handler.post(valueAnimator::start);
     }
     @Override
     public void NavigateTo(int i) {

@@ -1,5 +1,6 @@
 package com.example.myapplication.Activities;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.security.*;
 
@@ -28,6 +29,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     List<CarInfoClass> carInfoClass;
+    private UserDataClass userDataClass = new UserDataClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,30 +43,36 @@ public class LoginActivity extends AppCompatActivity {
         final Handler handler = new Handler();
         button.setOnClickListener((v -> new Thread(()->{
             if (!usernameET.getText().toString().equals("")&& !passwordET.getText().toString().equals("")) {
-                UserDataClass userDataClass = new ConnectionClass().getLoginInfo("GetLoginInfo", usernameET.getText().toString());
-                if (encodePassword(passwordET.getText().toString(), userDataClass.getUserPassword())) {
-                    //ArrayList<CarInfoClass> carInfoClass = new ConnectionClass().getInitialCoordinates("GetInitialCoordinates", 1, userDataClass.getUserId());
-                    RetrofitInterface retrofit =  RetrofitClass.getRetrofit("http://10.1.11.134/RESTWebService/").create(RetrofitInterface.class);
-                    Call<List<CarInfoClass>> call = retrofit.getInitialCoordinates(1,userDataClass.getUserId());
-                    call.enqueue(new Callback<List<CarInfoClass>>() {
-                        @Override
-                        public void onResponse(@NonNull Call<List<CarInfoClass>> call, @NonNull Response<List<CarInfoClass>> response) {
-                            if(response.isSuccessful())
-                            carInfoClass = response.body();
-                            Intent intent = new Intent(context, MainActivity.class);
-                            intent.putExtra("carInfoClass", (Serializable) carInfoClass);
-                            intent.putExtra("userDataClass",userDataClass);
-                            startActivity(intent);
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<List<CarInfoClass>> call, @NonNull Throwable t) {
-                            Toast.makeText(context,"Error connecting to server",Toast.LENGTH_LONG).show();
-                        }
-                    });
+                RetrofitInterface retrofit =  RetrofitClass.getRetrofit("http://10.1.11.134/gpsws/").create(RetrofitInterface.class);
+                try {
+                    userDataClass = retrofit.getLoginInfo(usernameET.getText().toString()).execute().body();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                else
-                    handler.post(()-> Toast.makeText(context,"Wrong Credentials",Toast.LENGTH_LONG).show());
+                if (userDataClass != null) {
+                    if (encodePassword(passwordET.getText().toString(), userDataClass.getUserPassword())) {
+                        //ArrayList<CarInfoClass> carInfoClass = new ConnectionClass().getInitialCoordinates("GetInitialCoordinates", 1, userDataClass.getUserId());
+                        Call<List<CarInfoClass>> call = retrofit.getInitialCoordinates(1,userDataClass.getUserId());
+                        call.enqueue(new Callback<List<CarInfoClass>>() {
+                            @Override
+                            public void onResponse(@NonNull Call<List<CarInfoClass>> call, @NonNull Response<List<CarInfoClass>> response) {
+                                if(response.isSuccessful()) {
+                                    carInfoClass = response.body();
+                                    Intent intent = new Intent(context, MainActivity.class);
+                                    intent.putExtra("carInfoClass", (Serializable) carInfoClass);
+                                    intent.putExtra("userDataClass", userDataClass);
+                                    startActivity(intent);
+                                }
+                            }
+                            @Override
+                            public void onFailure(@NonNull Call<List<CarInfoClass>> call, @NonNull Throwable t) {
+                                Toast.makeText(context,"Error connecting to server",Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                    else
+                        handler.post(()-> Toast.makeText(context,"Wrong Credentials",Toast.LENGTH_LONG).show());
+                }
             }
             else handler.post(()-> Toast.makeText(context,"Login or Password field is empty",Toast.LENGTH_LONG).show());
         }).start()));
